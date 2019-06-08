@@ -1,5 +1,6 @@
 const fs = require('fs'); // ライブラリのimport
 const path = require('path');
+const exec = require('child_process').exec;
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
@@ -7,6 +8,16 @@ const vscode = require('vscode');
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
+
+function execCommand (cmd, callback) {
+	exec(cmd, (error, stdout, stderr) => {
+		if (error) {
+			console.error(`exec error: ${error}`);
+			return;
+		}
+		callback(stdout);
+	});
+}
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -30,24 +41,15 @@ function activate(context) {
 		let dir = path.dirname(doc.fileName);
 		let outputPath = path.join(dir, "en.txt");
 
-		const cp = require('child_process');
-		const command = `cd ${dir} && python translate.py ${text}`;
+		const command = `cd ${dir} && python translate_ja_en.py ${text}`;
+		console.log(text);
 
-		const exec = require('child_process').exec;
-
-		(function (cmd, callback) {
-			exec(cmd, (error, stdout, stderr) => {
-				if (error) {
-					console.error(`exec error: ${error}`);
-					return;
-				}
-				callback(stdout);
-			});
-		})(command, function (returnvalue) {
-			text = `${returnvalue}\n${new Date().toISOString()}`;
+		execCommand(command, function (returnvalue) {
+			console.log(returnvalue);
+			text_en = `${returnvalue}\n${new Date().toISOString()}`;
 
 			// write
-			fs.writeFile(outputPath, text, (err) =>{
+			fs.writeFile(outputPath, text_en, (err) =>{
 				if(err) console.log(err);
 			});
 
@@ -60,6 +62,29 @@ function activate(context) {
 					vscode.window.showTextDocument(doc);
 				});
 			}
+
+			const command = `cd ${dir} && python translate_en_ja.py ${text_en}`;
+
+			execCommand(command, function(returnvalue) {
+				console.log(returnvalue);
+				let outputPath = path.join(dir, "ja.txt");
+				text_ja = `${returnvalue}\n${new Date().toISOString()}`;
+
+				// write
+				fs.writeFile(outputPath, text_ja, (err) =>{
+					if(err) console.log(err);
+				});
+
+				// open if not opened
+				var opened = vscode.window.visibleTextEditors.find(function(element) {
+					return element.document.fileName === outputPath;
+				});
+				if(!opened){
+					vscode.workspace.openTextDocument(outputPath).then(doc => {
+						vscode.window.showTextDocument(doc);
+					});
+				}
+			});
 		});
 
 	});
