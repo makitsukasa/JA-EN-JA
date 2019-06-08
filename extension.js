@@ -12,11 +12,6 @@ const vscode = require('vscode');
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "JA-EN-JA" is now active!');
-
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with  registerCommand
 	// The commandId parameter must match the command field in package.json
@@ -36,30 +31,37 @@ function activate(context) {
 		let outputPath = path.join(dir, "en.txt");
 
 		const cp = require('child_process');
-		const command = `cd ${dir} && dir`;
-		cp.exec(command, (err, stdout, stderr) => {
-			console.log('stdout: ' + stdout);
-			console.log('stderr: ' + stderr);
-			if (err) {
-				console.log('error: ' + err);
+		const command = `cd ${dir} && python translate.py ${text}`;
+
+		const exec = require('child_process').exec;
+
+		(function (cmd, callback) {
+			exec(cmd, (error, stdout, stderr) => {
+				if (error) {
+					console.error(`exec error: ${error}`);
+					return;
+				}
+				callback(stdout);
+			});
+		})(command, function (returnvalue) {
+			text = `${returnvalue}\n${new Date().toISOString()}`;
+
+			// write
+			fs.writeFile(outputPath, text, (err) =>{
+				if(err) console.log(err);
+			});
+
+			// open if not opened
+			var opened = vscode.window.visibleTextEditors.find(function(element) {
+				return element.document.fileName === outputPath;
+			});
+			if(!opened){
+				vscode.workspace.openTextDocument(outputPath).then(doc => {
+					vscode.window.showTextDocument(doc);
+				});
 			}
 		});
-		text += new Date().toISOString();
 
-		// write
-		fs.writeFile(outputPath, text, (err) =>{
-			if(err) console.log(err);
-		});
-
-		// open if not opened
-		var opened = vscode.window.visibleTextEditors.find(function(element) {
-			return element.document.fileName === outputPath;
-		});
-		if(!opened){
-			vscode.workspace.openTextDocument(outputPath).then(doc => {
-				vscode.window.showTextDocument(doc);
-			});
-		}
 	});
 	context.subscriptions.push(hoge);
 
