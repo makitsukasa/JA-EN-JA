@@ -29,32 +29,29 @@ function activate(context) {
 	context.subscriptions.push(disposable);
 
 	let hoge = vscode.commands.registerCommand('extension.hoge', function () {
-		let editor = vscode.window.activeTextEditor; // エディタ取得
-		let doc = editor.document;            // ドキュメント取得
-		let cur_selection = editor.selection; // 選択範囲取得
-		if(editor.selection.isEmpty){
-			// 選択範囲が空であれば全てを選択範囲にする
-			let startPos = new vscode.Position(0, 0);
-			let endPos = new vscode.Position(doc.lineCount - 1, 10000);
-			cur_selection = new vscode.Selection(startPos, endPos);
-		}
+		let doc = vscode.window.activeTextEditor.document;
+		let text = doc.getText();
 
-		let text = doc.getText(cur_selection); //取得されたテキスト
+		let dir = path.dirname(doc.fileName);
+		let outputPath = path.join(dir, "en.txt");
 
-		/**
-		 * ここでテキストを加工します。
-		 **/
+		const cp = require('child_process');
+		const command = `cd ${dir} && dir`;
+		cp.exec(command, (err, stdout, stderr) => {
+			console.log('stdout: ' + stdout);
+			console.log('stderr: ' + stderr);
+			if (err) {
+				console.log('error: ' + err);
+			}
+		});
 		text += new Date().toISOString();
-
-		outputDir = path.dirname(vscode.window.activeTextEditor.document.fileName);
-		outputPath = path.join(outputDir, "en.txt");
 
 		// write
 		fs.writeFile(outputPath, text, (err) =>{
 			if(err) console.log(err);
 		});
 
-		// open
+		// open if not opened
 		var opened = vscode.window.visibleTextEditors.find(function(element) {
 			return element.document.fileName === outputPath;
 		});
