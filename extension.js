@@ -55,11 +55,14 @@ function activate(context) {
 		});
 
 		// open
-		// if(!vscode.window.visibleTextEditors.find(outputPath)){
-		// 	vscode.workspace.openTextDocument(outputPath).then(doc => {
-		// 		vscode.window.showTextDocument(doc);
-		// 	});
-		// }
+		var opened = vscode.window.visibleTextEditors.find(function(element) {
+			return element.document.fileName === outputPath;
+		});
+		if(!opened){
+			vscode.workspace.openTextDocument(outputPath).then(doc => {
+				vscode.window.showTextDocument(doc);
+			});
+		}
 	});
 	context.subscriptions.push(hoge);
 
