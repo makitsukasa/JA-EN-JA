@@ -67,6 +67,8 @@ function activate(context) {
 
 			execCommand(command, function(returnvalue) {
 				console.log(returnvalue);
+				returnvalue = decodeURIComponent(returnvalue);
+				console.log(returnvalue);
 				let outputPath = path.join(dir, "ja.txt");
 				text_ja = `${returnvalue}\n${new Date().toISOString()}`;
 
