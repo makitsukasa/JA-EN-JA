@@ -1,2 +1,2 @@
-It is a cat. Thank you in advance.
-2019-06-08T18:18:43.196Z
+You can translate it by typing Japanese characters. By translating the translated string back into Japanese, you can determine if the translation was done correctly.
+2019-06-09T14:30:35.774Z
