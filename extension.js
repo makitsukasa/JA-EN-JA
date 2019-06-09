@@ -42,10 +42,10 @@ function activate(context) {
 		let outputPath = path.join(dir, "en.txt");
 
 		const command = `cd ${dir} && python translate_ja_en.py ${text}`;
-		console.log(text);
+		// console.log(text);
 
 		execCommand(command, function (returnvalue) {
-			console.log(returnvalue);
+			// console.log(returnvalue);
 			text_en = `${returnvalue}\n${new Date().toISOString()}`;
 
 			// write
@@ -66,9 +66,9 @@ function activate(context) {
 			const command = `cd ${dir} && python translate_en_ja.py ${text_en}`;
 
 			execCommand(command, function(returnvalue) {
-				console.log(returnvalue);
+				// console.log(returnvalue);
 				returnvalue = decodeURIComponent(returnvalue);
-				console.log(returnvalue);
+				// console.log(returnvalue);
 				let outputPath = path.join(dir, "ja.txt");
 				text_ja = `${returnvalue}\n${new Date().toISOString()}`;
 
