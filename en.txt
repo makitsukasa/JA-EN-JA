@@ -1,2 +1,5 @@
-You can translate it by typing Japanese characters. By translating the translated string back into Japanese, you can determine if the translation was done correctly.
-2019-06-09T14:30:35.774Z
+You can translate it by typing Japanese characters.
+By translating the translated string back into Japanese, you can determine if the translation was done correctly.
+
+Works correctly with newlines and blank lines.
+2019-06-10T20:05:17.051Z

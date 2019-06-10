@@ -37,21 +37,25 @@ function activate(context) {
 	let hoge = vscode.commands.registerCommand('extension.hoge', function () {
 		let doc = vscode.window.activeTextEditor.document;
 		let text = doc.getText();
+		text = text.replace(/\n/g, '\\n');
 
 		let dir = path.dirname(doc.fileName);
 		let outputPath = path.join(dir, "en.txt");
 
 		const command = `cd ${dir} && python translate_ja_en.py ${text}`;
-		// console.log(text);
+		console.log(text);
 
 		execCommand(command, function (returnvalue) {
-			// console.log(returnvalue);
-			text_en = `${returnvalue}\n${new Date().toISOString()}`;
+			console.log(returnvalue);
+			let ret_nl = returnvalue.replace(/\\n/g, "\n");
+			let text_en = `${ret_nl}\n${new Date().toISOString()}`;
 
 			// write
 			fs.writeFile(outputPath, text_en, (err) =>{
 				if(err) console.log(err);
 			});
+
+			text_en = text_en.replace(/\n/g, '\\n');
 
 			// open if not opened
 			var opened = vscode.window.visibleTextEditors.find(function(element) {
@@ -66,11 +70,12 @@ function activate(context) {
 			const command = `cd ${dir} && python translate_en_ja.py ${text_en}`;
 
 			execCommand(command, function(returnvalue) {
-				// console.log(returnvalue);
+				console.log(returnvalue);
 				returnvalue = decodeURIComponent(returnvalue);
-				// console.log(returnvalue);
+				console.log(returnvalue);
 				let outputPath = path.join(dir, "ja.txt");
-				text_ja = `${returnvalue}\n${new Date().toISOString()}`;
+				let ret_nl = returnvalue.replace(/\\n/g, "\n");
+				let text_ja = `${ret_nl}\n${new Date().toISOString()}`;
 
 				// write
 				fs.writeFile(outputPath, text_ja, (err) =>{
