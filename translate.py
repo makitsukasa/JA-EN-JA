@@ -34,6 +34,7 @@ text_translated = "\n\n".join(text_5000_translated)
 bytestring = str(text_translated.encode('utf-8'))\
 	.lstrip("b'")\
 	.rstrip("'")\
+	.replace("\\xc2\\xa0", "")\
 	.replace("\\x", "%")\
 	.replace("\n", "\\n")\
 	.replace("\\\\ ", "\\")
