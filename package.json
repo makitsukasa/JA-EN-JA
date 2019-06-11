@@ -3,6 +3,7 @@
 	"displayName": "JA-EN-JA",
 	"description": "",
 	"version": "0.0.1",
+	"publisher": "boxy",
 	"engines": {
 		"vscode": "^1.35.0"
 	},
@@ -10,16 +11,11 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld",
 		"onCommand:extension.hoge"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
-			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
-			},
 			{
 				"command": "extension.hoge",
 				"title": "hoge"

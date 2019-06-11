@@ -13,6 +13,7 @@ function execCommand (cmd, callback) {
 	exec(cmd, (error, stdout, stderr) => {
 		if (error) {
 			console.error(`exec error: ${error}`);
+			console.error(`exec error: ${stderr}`);
 			return;
 		}
 		callback(stdout);
@@ -35,15 +36,16 @@ function activate(context) {
 	context.subscriptions.push(disposable);
 
 	let hoge = vscode.commands.registerCommand('extension.hoge', function () {
-		let doc = vscode.window.activeTextEditor.document;
+		const doc = vscode.window.activeTextEditor.document;
 		let text = doc.getText();
 		text = text.replace(/\n/g, '\\n');
 
-		let dir = path.dirname(doc.fileName);
-		let outputPath = path.join(dir, "en.txt");
-
-		const command = `cd ${dir} && python translate_ja_en.py ${text}`;
-		console.log(text);
+		// const fileDir = path.dirname(doc.fileName);
+		const extDir = vscode.extensions.getExtension("boxy.JA-EN-JA").extensionPath;
+		console.log(extDir);
+		let pyPath = path.join(extDir, "translate_ja_en.py");
+		let outputPath = path.join(extDir, "en.txt");
+		let command = `python ${pyPath} ${text}`;
 
 		execCommand(command, function (returnvalue) {
 			console.log(returnvalue);
@@ -67,13 +69,15 @@ function activate(context) {
 				});
 			}
 
-			const command = `cd ${dir} && python translate_en_ja.py ${text_en}`;
+			pyPath = path.join(extDir, "translate_en_ja.py");
+			outputPath = path.join(extDir, "ja.txt");
+			command = `python ${pyPath} ${text}`;
 
 			execCommand(command, function(returnvalue) {
 				console.log(returnvalue);
 				returnvalue = decodeURIComponent(returnvalue);
 				console.log(returnvalue);
-				let outputPath = path.join(dir, "ja.txt");
+				let outputPath = path.join(extDir, "ja.txt");
 				let ret_nl = returnvalue.replace(/\\n/g, "\n");
 				let text_ja = `${ret_nl}\n${new Date().toISOString()}`;
 
