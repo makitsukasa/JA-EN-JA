@@ -51,7 +51,8 @@ function activate(context) {
 		execCommand(command, function (returnvalue) {
 			console.log(returnvalue);
 			let ret_nl = returnvalue.replace(/\\n/g, "\n");
-			let text_en = `${ret_nl}\n${new Date().toISOString()}`;
+			// let text_en = `${ret_nl}\n${new Date().toISOString()}`;
+			let text_en = ret_nl
 
 			// write
 			fs.writeFile(outputPath, text_en, (err) =>{
@@ -80,7 +81,8 @@ function activate(context) {
 				console.log(returnvalue);
 				let outputPath = path.join(extDir, "ja.txt");
 				let ret_nl = returnvalue.replace(/\\n/g, "\n");
-				let text_ja = `${ret_nl}\n${new Date().toISOString()}`;
+				// let text_ja = `${ret_nl}\n${new Date().toISOString()}`;
+				let text_ja = ret_nl
 
 				// write
 				fs.writeFile(outputPath, text_ja, (err) =>{
