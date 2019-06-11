@@ -43,9 +43,10 @@ function activate(context) {
 		// const fileDir = path.dirname(doc.fileName);
 		const extDir = vscode.extensions.getExtension("boxy.JA-EN-JA").extensionPath;
 		console.log(extDir);
-		let pyPath = path.join(extDir, "translate_ja_en.py");
+		let pyPath = path.join(extDir, "translate.py");
 		let outputPath = path.join(extDir, "en.txt");
-		let command = `python ${pyPath} ${text}`;
+		let command = `python ${pyPath} --ja_en ${text}`;
+		console.log(command)
 
 		execCommand(command, function (returnvalue) {
 			console.log(returnvalue);
@@ -69,9 +70,9 @@ function activate(context) {
 				});
 			}
 
-			pyPath = path.join(extDir, "translate_en_ja.py");
+			pyPath = path.join(extDir, "translate.py");
 			outputPath = path.join(extDir, "ja.txt");
-			command = `python ${pyPath} ${text}`;
+			command = `python ${pyPath} --en_ja ${text}`;
 
 			execCommand(command, function(returnvalue) {
 				console.log(returnvalue);

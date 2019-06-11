@@ -25,4 +25,4 @@ Therefore, in the proposed method, this purpose is achieved by changing the grou
 Specifically, first, the search is performed in a state where the group size is small. If the group size is small, the number of evaluations can be reduced, so the convergence speed will be faster, and it can be expected to find a good solution at the beginning of the search.
 Next, search for a global optimal solution. At that time, the group size is made sufficiently large to search. It can be expected to secure diversity by finding a sufficient group size and to find a global optimum solution. In addition, JGG is used for the generation alternation model.
 \\ end {comment}
-2019-06-11T11:39:57.895Z
+2019-06-11T12:24:31.884Z
