@@ -11,14 +11,19 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.hoge"
+		"onCommand:extension.googletrans",
+		"onCommand:extension.opengoogletrans"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.hoge",
-				"title": "hoge"
+				"command": "extension.googletrans",
+				"title": "googletrans"
+			},
+			{
+				"command": "extension.opengoogletrans",
+				"title": "opengoogletrans"
 			}
 		]
 	},

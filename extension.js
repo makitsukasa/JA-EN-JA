@@ -1,10 +1,12 @@
-const fs = require('fs'); // ライブラリのimport
+const fs = require('fs');
 const path = require('path');
 const exec = require('child_process').exec;
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
+
+const extDir = vscode.extensions.getExtension("boxy.JA-EN-JA").extensionPath;
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -35,13 +37,13 @@ function activate(context) {
 	});
 	context.subscriptions.push(disposable);
 
-	let hoge = vscode.commands.registerCommand('extension.hoge', function () {
+	let googletrans = vscode.commands.registerCommand('extension.googletrans', function () {
 		const doc = vscode.window.activeTextEditor.document;
 		let text = doc.getText();
 		text = text.replace(/\n/g, '\\n');
 
 		// const fileDir = path.dirname(doc.fileName);
-		const extDir = vscode.extensions.getExtension("boxy.JA-EN-JA").extensionPath;
+
 		console.log(extDir);
 		let pyPath = path.join(extDir, "translate.py");
 		let outputPath = path.join(extDir, "en.txt");
@@ -61,16 +63,6 @@ function activate(context) {
 
 			text_en = text_en.replace(/\n/g, '\\n');
 
-			// open if not opened
-			var opened = vscode.window.visibleTextEditors.find(function(element) {
-				return element.document.fileName === outputPath;
-			});
-			if(!opened){
-				vscode.workspace.openTextDocument(outputPath).then(doc => {
-					vscode.window.showTextDocument(doc);
-				});
-			}
-
 			pyPath = path.join(extDir, "translate.py");
 			outputPath = path.join(extDir, "ja.txt");
 			command = `python ${pyPath} --en_ja ${text}`;
@@ -88,21 +80,16 @@ function activate(context) {
 				fs.writeFile(outputPath, text_ja, (err) =>{
 					if(err) console.log(err);
 				});
-
-				// open if not opened
-				var opened = vscode.window.visibleTextEditors.find(function(element) {
-					return element.document.fileName === outputPath;
-				});
-				if(!opened){
-					vscode.workspace.openTextDocument(outputPath).then(doc => {
-						vscode.window.showTextDocument(doc);
-					});
-				}
 			});
 		});
 
 	});
-	context.subscriptions.push(hoge);
+	context.subscriptions.push(googletrans);
+
+	let opengoogletrans = vscode.commands.registerCommand('extension.opengoogletrans', function () {
+
+	});
+	context.subscriptions.push(opengoogletrans);
 
 }
 exports.activate = activate;
