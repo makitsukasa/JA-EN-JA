@@ -22,7 +22,7 @@ for d in text_paragraph_wise:
 		continue
 	text_5000[-1] += "\n\n" + d
 
-text_5000_translated = [""]
+text_5000_translated = []
 if args.ja_en:
 	for t in text_5000:
 		text_5000_translated.append(tr.translate(t, src='ja', dest='en').text)
