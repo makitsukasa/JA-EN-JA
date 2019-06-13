@@ -87,7 +87,14 @@ function activate(context) {
 	context.subscriptions.push(googletrans);
 
 	let opengoogletrans = vscode.commands.registerCommand('extension.opengoogletrans', function () {
-
+		var openPath = vscode.Uri.parse("file:///" + path.join(extDir, "ja.txt")); //A request file path
+		vscode.workspace.openTextDocument(openPath).then(doc => {
+			vscode.window.showTextDocument(doc, {preview : false});
+		});
+		var openPath = vscode.Uri.parse("file:///" + path.join(extDir, "en.txt")); //A request file path
+		vscode.workspace.openTextDocument(openPath).then(doc => {
+			vscode.window.showTextDocument(doc, {preview : false});
+		});
 	});
 	context.subscriptions.push(opengoogletrans);
 
