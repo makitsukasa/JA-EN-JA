@@ -16,7 +16,7 @@ function execCommand (cmd, callback) {
 		if (error) {
 			console.error(`exec error: ${error}`);
 			console.error(`exec error: ${stderr}`);
-			return;
+			callback(stderr);
 		}
 		callback(stdout);
 	});
