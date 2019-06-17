@@ -1,4 +1,5 @@
 import sys
+import re
 import argparse
 import googletrans
 
@@ -10,8 +11,22 @@ args = parser.parse_args()
 
 tr = googletrans.Translator()
 
+ESCAPED_INDICATOR = "REGEX_ESCAPE_"
+ESCAPE_REGEX = [re.compile(r"\$[^\$]*\$")]
+escaped_count = 0
+escaped_strings = []
+
 text = " ".join(args.text)
 text = text.replace("\\n", "\n")
+
+for regex in ESCAPE_REGEX:
+	while True:
+		result = re.search(regex, text)
+		if not result:
+			break
+		escaped_strings.append(result.group())
+		text = re.sub(regex, ESCAPED_INDICATOR + str(escaped_count), text, 1)
+		escaped_count += 1
 
 text_paragraph_wise = text.split("\n\n")
 
@@ -36,11 +51,18 @@ for t in text_5000:
 	text_5000_translated.append(tr.translate(t, src=src, dest=dest).text)
 
 text_translated = "\n\n".join(text_5000_translated)
+
+for i in range(escaped_count):
+	# print(escaped_strings[i], file = sys.stderr)
+	text_translated = text_translated.replace(ESCAPED_INDICATOR + str(i), escaped_strings[i])
+	# print(text, file = sys.stderr)
+
 bytestring = str(text_translated.encode('utf-8'))\
 	.lstrip("b'")\
 	.rstrip("'")\
 	.replace("\\xc2\\xa0", "")\
 	.replace("\\x", "%")\
 	.replace("\n", "\\n")\
-	.replace("\\\\ ", "\\")
+	.replace("\\\\", "\\")\
+	.replace("\\ ", "\\")
 print(bytestring, end="")
