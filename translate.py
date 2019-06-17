@@ -15,20 +15,25 @@ text = text.replace("\\n", "\n")
 
 text_paragraph_wise = text.split("\n\n")
 
+if args.ja_en:
+	src = 'ja'
+	dest = 'en'
+	max_len = 2000
+else:
+	src = 'en'
+	dest = 'ja'
+	max_len = 5000
+
 text_5000 = [""]
 for d in text_paragraph_wise:
-	if len(text_5000[-1]) + len(d) >= 2000:
+	if len(text_5000[-1]) + len(d) >= max_len:
 		text_5000.append(d)
 		continue
 	text_5000[-1] += "\n\n" + d
 
 text_5000_translated = []
-if args.ja_en:
-	for t in text_5000:
-		text_5000_translated.append(tr.translate(t, src='ja', dest='en').text)
-else:
-	for t in text_5000:
-		text_5000_translated.append(tr.translate(t, src='en', dest='ja').text)
+for t in text_5000:
+	text_5000_translated.append(tr.translate(t, src=src, dest=dest).text)
 
 text_translated = "\n\n".join(text_5000_translated)
 bytestring = str(text_translated.encode('utf-8'))\
