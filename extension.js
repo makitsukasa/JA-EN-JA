@@ -40,7 +40,7 @@ function activate(context) {
 	let googletrans = vscode.commands.registerCommand('extension.googletrans', function () {
 		const doc = vscode.window.activeTextEditor.document;
 		let text = doc.getText();
-		text = text.replace(/\n/g, '\\n');
+		text = text.replace(/\n/g, '\\n').replace(/\^/g, "^^");
 
 		// const fileDir = path.dirname(doc.fileName);
 
@@ -61,7 +61,7 @@ function activate(context) {
 				if(err) console.log(err);
 			});
 
-			text_en = text_en.replace(/\n/g, '\\n');
+			text_en = text_en.replace(/\n/g, '\\n').replace(/\^/g, "^^");;
 
 			pyPath = path.join(extDir, "translate.py");
 			outputPath = path.join(extDir, "ja.txt");
