@@ -11,13 +11,16 @@ args = parser.parse_args()
 
 tr = googletrans.Translator()
 
-ESCAPED_INDICATOR = "REGEX_ESCAPE_"
-ESCAPE_REGEX = [re.compile(r"\$[^\$]*\$")]
+ESCAPED_INDICATOR = "_REG_ESC_"
+ESCAPE_REGEX = [
+	re.compile(r"\$\$[^\$]+\$\$"),
+	re.compile(r"\$[^\$]+\$")]
 escaped_count = 0
 escaped_strings = []
 
 text = " ".join(args.text)
 text = text.replace("\\n", "\n")
+print(text, file=sys.stderr)
 
 for regex in ESCAPE_REGEX:
 	while True:
@@ -25,6 +28,7 @@ for regex in ESCAPE_REGEX:
 		if not result:
 			break
 		escaped_strings.append(result.group())
+		print(result.group(), file = sys.stderr)
 		text = re.sub(regex, ESCAPED_INDICATOR + str(escaped_count), text, 1)
 		escaped_count += 1
 
@@ -52,10 +56,12 @@ for t in text_5000:
 
 text_translated = "\n\n".join(text_5000_translated)
 
-for i in range(escaped_count):
+for i in reversed(range(escaped_count)):
 	# print(escaped_strings[i], file = sys.stderr)
 	text_translated = text_translated.replace(ESCAPED_INDICATOR + str(i), escaped_strings[i])
 	# print(text, file = sys.stderr)
+
+# exit(-1)
 
 bytestring = str(text_translated.encode('utf-8'))\
 	.lstrip("b'")\
