@@ -1,2 +1,3 @@
-$f_{init}$を初期集団におけるobjective function valueの平均とし，$f_1$を最近に生成されたchildrenのobjective function valueの平均とし，$f_2$を2番目に最近に生成されたchildrenのobjective function valueの平均とする．
-$$\frac{f_2-f_1}{f_{init}-f_1}$$の値が$10^{-2}$を下回ったかどうかで序盤と中盤を区別することとする．同様に値が$10^{-6}$を下回ったかどうかで中盤と終盤を区別することとする．
+長い文章があるとする．
+その中のとある箇所だけ翻訳したい．
+そこを選んでから翻訳する．

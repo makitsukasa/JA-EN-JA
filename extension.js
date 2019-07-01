@@ -38,8 +38,14 @@ function activate(context) {
 	context.subscriptions.push(disposable);
 
 	let googletrans = vscode.commands.registerCommand('extension.googletrans', function () {
-		const doc = vscode.window.activeTextEditor.document;
+		let editor = vscode.window.activeTextEditor; // エディタ取得
+		const doc = vscode.window.activeTextEditor.document; // ドキュメント取得
 		let text = doc.getText();
+		// 選択範囲が空でないときは選択範囲のみ
+		if(!editor.selection.isEmpty){
+			text = doc.getText(editor.selection);
+		}
+
 		text = text.replace(/\n/g, '\\n').replace(/\^/g, "^^");
 
 		// const fileDir = path.dirname(doc.fileName);

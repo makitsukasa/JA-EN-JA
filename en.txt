@@ -1,2 +1,1 @@
-Let $f_{init}$ be the average of objective function values %e2%80%8b%e2%80%8bin the initial population, let $f_1$ be the average of the objective function values %e2%80%8b%e2%80%8bof the recently generated children, and $f_2$ be the average of the objective function values %e2%80%8b%e2%80%8bof the second most recently generated children.
-We will distinguish between the early stage and the middle stage based on whether the value of $$\frac{f_2-f_1}{f_{init}-f_1}$$ falls below $10^{-2}$. Similarly, the middle stage and the last stage are distinguished by whether the value falls below $10^{-6}$.
+I want to translate only a certain part of it.
