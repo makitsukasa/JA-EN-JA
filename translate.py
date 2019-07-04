@@ -67,6 +67,7 @@ bytestring = str(text_translated.encode('utf-8'))\
 	.lstrip("b'")\
 	.rstrip("'")\
 	.replace("\\xc2\\xa0", "")\
+	.replace("\\xe2\\x80\\x8b", "")\
 	.replace("\\x", "%")\
 	.replace("\n", "\\n")\
 	.replace("\\\\", "\\")\
