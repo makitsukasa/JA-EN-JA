@@ -40,10 +40,18 @@ function activate(context) {
 	let googletrans = vscode.commands.registerCommand('extension.googletrans', function () {
 		let editor = vscode.window.activeTextEditor; // エディタ取得
 		const doc = vscode.window.activeTextEditor.document; // ドキュメント取得
-		let text = doc.getText();
+		let text = "";
 		// 選択範囲が空でないときは選択範囲のみ
 		if(!editor.selection.isEmpty){
 			text = doc.getText(editor.selection);
+		}
+		// 選択範囲が空のときはカーソルがある一行
+		else{
+			const cursorLine = editor.selection.active.line;
+			const startPos = new vscode.Position(cursorLine, 0);
+			const endPos = new vscode.Position(cursorLine, 10000);
+			const line = new vscode.Selection(startPos, endPos);
+			text = doc.getText(line);
 		}
 
 		text = text.replace(/\n/g, '\\n').replace(/\^/g, "^^");

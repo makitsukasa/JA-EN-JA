@@ -1,1 +1,1 @@
-I want to translate only a certain part of it.
+I want to translate only the line where the cursor is.
